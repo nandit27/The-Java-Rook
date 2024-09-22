@@ -8,13 +8,17 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isValidMove(String newPosition, Piece[][] board) {
-        
         // Convert positions like "A2" to board indices
         int currentRow = 8 - Character.getNumericValue(position.charAt(1));  // '2' -> 6
-        int currentCol = position.charAt(0) - 'A';  // 'A' -> 0
+        int currentCol = Character.toUpperCase(position.charAt(0)) - 'A';  // 'A' -> 0
         
         int newRow = 8 - Character.getNumericValue(newPosition.charAt(1));  // '3' -> 5
-        int newCol = newPosition.charAt(0) - 'A';  // 'A' -> 0
+        int newCol = Character.toUpperCase(newPosition.charAt(0)) - 'A';  // 'A' -> 0
+
+        // Ensure within board limits
+        if (newRow < 0 || newRow > 7 || newCol < 0 || newCol > 7) {
+            return false;  // Out of bounds
+        }
 
         // Determine the direction of movement based on color (White moves "up", Black moves "down")
         int direction = isWhite ? -1 : 1;
