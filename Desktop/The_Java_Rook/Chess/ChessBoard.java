@@ -44,7 +44,11 @@ public class ChessBoard {
 
     public void printBoard(boolean isWhiteTurn) {
         // Print column labels
-        System.out.print("    A   B   C   D   E   F   G   H\n");
+        if (isWhiteTurn) {
+            System.out.print("    A   B   C   D   E   F   G   H\n");
+        } else {
+            System.out.print("    H   G   F   E   D   C   B   A\n");
+        }
         System.out.print("  +---+---+---+---+---+---+---+---+\n");
     
         if (isWhiteTurn) {
@@ -59,7 +63,7 @@ public class ChessBoard {
         } else {
             // Print from Black's perspective
             for (int i = 0; i < 8; i++) {
-                System.out.print((8 - i) + " |");
+                System.out.print((i + 1) + " |");
                 for (int j = 7; j >= 0; j--) {
                     printPiece(i, j);
                 }
@@ -82,9 +86,9 @@ public class ChessBoard {
 
     public boolean movePiece(String currentPosition, String newPosition){
         // Convert positions like "A2" to board indices
-        int currentRow = 8 - Character.getNumericValue(currentPosition.charAt(1));
+        int currentRow = Character.getNumericValue(currentPosition.charAt(1)) - 1;
         int currentCol = currentPosition.charAt(0) - 'A';
-        int newRow = 8 - Character.getNumericValue(newPosition.charAt(1));
+        int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;
         int newCol = newPosition.charAt(0) - 'A';
 
         Piece piece = board[currentRow][currentCol];
@@ -101,7 +105,7 @@ public class ChessBoard {
     }
 
     public Piece getPieceAt(String position) {
-        int row = 8 - Character.getNumericValue(position.charAt(1));
+        int row = Character.getNumericValue(position.charAt(1)) - 1;
         int col = position.charAt(0) - 'A';
         return board[row][col];
     }

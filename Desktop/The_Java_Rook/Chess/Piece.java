@@ -27,6 +27,10 @@ public abstract class Piece {
         return position;
     }
 
+    public void setPosition(String newPosition) {
+        this.position = newPosition;
+    }
+    
     // Method to check if the piece is White
     public boolean isWhite() {
         return isWhite;

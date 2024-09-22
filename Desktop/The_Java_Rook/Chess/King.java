@@ -8,9 +8,9 @@ public class King extends Piece {
     @Override
     public boolean isValidMove(String newPosition, Piece[][] board) {
         // Convert positions like "A2" to board indices
-        int currentRow = 8 - Character.getNumericValue(getPosition().charAt(1));
+        int currentRow = Character.getNumericValue(getPosition().charAt(1)) - 1;
         int currentCol = Character.toUpperCase(getPosition().charAt(0)) - 'A';
-        int newRow = 8 - Character.getNumericValue(newPosition.charAt(1));
+        int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;
         int newCol = Character.toUpperCase(newPosition.charAt(0)) - 'A';
 
         // Ensure within board limits
@@ -27,16 +27,11 @@ public class King extends Piece {
         int rowDiff = Math.abs(currentRow - newRow);
         int colDiff = Math.abs(currentCol - newCol);
 
-        if (rowDiff > 1 || colDiff > 1) {
-            return false; // Invalid move
+        if (rowDiff <= 1 && colDiff <= 1) {
+            // Allow the move if the target square is empty or contains an opponent's piece
+            return board[newRow][newCol] == null || board[newRow][newCol].isWhite() != isWhite;
         }
 
-        // Check if the destination square is occupied by the same color
-        Piece destinationPiece = board[newRow][newCol];
-        if (destinationPiece != null && destinationPiece.isWhite() == this.isWhite()) {
-            return false; // Can't capture own piece
-        }
-
-        return true; // Valid move
+        return false; // Invalid move
     }
 }

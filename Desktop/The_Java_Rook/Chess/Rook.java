@@ -9,10 +9,10 @@ public class Rook extends Piece {
     @Override
     public boolean isValidMove(String newPosition, Piece[][] board) {
         // Convert positions like "A2" to board indices
-        int currentRow = 8 - Character.getNumericValue(position.charAt(1));
+        int currentRow = Character.getNumericValue(position.charAt(1)) - 1;
         int currentCol = Character.toUpperCase(position.charAt(0)) - 'A';
         
-        int newRow = 8 - Character.getNumericValue(newPosition.charAt(1));
+        int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;
         int newCol = Character.toUpperCase(newPosition.charAt(0)) - 'A';
 
         // Ensure within board limits

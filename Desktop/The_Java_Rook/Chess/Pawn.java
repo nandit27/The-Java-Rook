@@ -9,10 +9,10 @@ public class Pawn extends Piece {
     @Override
     public boolean isValidMove(String newPosition, Piece[][] board) {
         // Convert positions like "A2" to board indices
-        int currentRow = 8 - Character.getNumericValue(position.charAt(1));  // '2' -> 6
+        int currentRow = Character.getNumericValue(position.charAt(1)) - 1;  // '2' -> 6
         int currentCol = Character.toUpperCase(position.charAt(0)) - 'A';  // 'A' -> 0
         
-        int newRow = 8 - Character.getNumericValue(newPosition.charAt(1));  // '3' -> 5
+        int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;  // '3' -> 5
         int newCol = Character.toUpperCase(newPosition.charAt(0)) - 'A';  // 'A' -> 0
 
         // Ensure within board limits
@@ -21,7 +21,7 @@ public class Pawn extends Piece {
         }
 
         // Determine the direction of movement based on color (White moves "up", Black moves "down")
-        int direction = isWhite ? -1 : 1;
+        int direction = isWhite ? 1 : -1;
 
         // Basic move (one square forward)
         if (newCol == currentCol && newRow == currentRow + direction) {
@@ -31,7 +31,7 @@ public class Pawn extends Piece {
         // Initial two-square move
         if (newCol == currentCol && newRow == currentRow + 2 * direction) {
             // Pawns can move two squares forward only if they're at their initial position and both squares are empty
-            if ((isWhite && currentRow == 6) || (!isWhite && currentRow == 1)) {
+            if ((isWhite && currentRow == 1) || (!isWhite && currentRow == 6)) {
                 return board[newRow][newCol] == null && board[currentRow + direction][currentCol] == null;
             }
         }
