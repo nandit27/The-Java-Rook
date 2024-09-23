@@ -1,8 +1,8 @@
 package Chess;
 
-public class Knight extends Piece {
+public class Night extends Piece {
 
-    public Knight(String position, boolean isWhite) {
+    public Night(String position, boolean isWhite) {
         super(position, isWhite);
     }
 

@@ -13,12 +13,12 @@ public class ChessBoard {
         
         // White pieces
         board[0][0] = new Rook("A1", true);
-        board[0][1] = new Knight("B1", true);
+        board[0][1] = new Night("B1", true);
         board[0][2] = new Bishop("C1", true);
         board[0][3] = new Queen("D1", true);
         board[0][4] = new King("E1", true);
         board[0][5] = new Bishop("F1", true);
-        board[0][6] = new Knight("G1", true);
+        board[0][6] = new Night("G1", true);
         board[0][7] = new Rook("H1", true);
 
         // White pawns
@@ -28,12 +28,12 @@ public class ChessBoard {
 
         // Black pieces
         board[7][0] = new Rook("A8", false);
-        board[7][1] = new Knight("B8", false);
+        board[7][1] = new Night("B8", false);
         board[7][2] = new Bishop("C8", false);
         board[7][3] = new Queen("D8", false);
         board[7][4] = new King("E8", false);
         board[7][5] = new Bishop("F8", false);
-        board[7][6] = new Knight("G8", false);
+        board[7][6] = new Night("G8", false);
         board[7][7] = new Rook("H8", false);
 
         // Black pawns
