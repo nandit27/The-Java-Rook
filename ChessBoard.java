@@ -3,12 +3,12 @@ package TheJavaRook;
 public class ChessBoard {
     private Piece[][] board;
 
-    public ChessBoard(){
+    public ChessBoard() {
         board = new Piece[8][8];
         initialiseGame();
     }
 
-    public void initialiseGame(){
+    public void initialiseGame() {
         // Initialize pieces for both players (White on rows 1-2, Black on rows 7-8)
         
         // White pieces
@@ -42,49 +42,7 @@ public class ChessBoard {
         }
     }
 
-    public void printBoard(boolean isWhiteTurn) {
-        // Print column labels
-        if (isWhiteTurn) {
-            System.out.print("    A   B   C   D   E   F   G   H\n");
-        } else {
-            System.out.print("    H   G   F   E   D   C   B   A\n");
-        }
-        System.out.print("  +---+---+---+---+---+---+---+---+\n");
-    
-        if (isWhiteTurn) {
-            // Print from White's perspective
-            for (int i = 7; i >= 0; i--) {
-                System.out.print((i + 1) + " |");
-                for (int j = 0; j < 8; j++) {
-                    printPiece(i, j);
-                }
-                System.out.print("\n  +---+---+---+---+---+---+---+---+\n");
-            }
-        } else {
-            // Print from Black's perspective
-            for (int i = 0; i < 8; i++) {
-                System.out.print((i + 1) + " |");
-                for (int j = 7; j >= 0; j--) {
-                    printPiece(i, j);
-                }
-                System.out.print("\n  +---+---+---+---+---+---+---+---+\n");
-            }
-        }
-    }
-    
-    private void printPiece(int i, int j) {
-        if (board[i][j] != null) {
-            Piece piece = board[i][j];
-            char pieceChar = piece.isWhite() ?
-                    Character.toUpperCase(piece.getClass().getSimpleName().charAt(0)) :
-                    Character.toLowerCase(piece.getClass().getSimpleName().charAt(0));
-            System.out.print(" " + pieceChar + " |");
-        } else {
-            System.out.print("   |");
-        }
-    }
-
-    public boolean movePiece(String currentPosition, String newPosition){
+    public boolean movePiece(String currentPosition, String newPosition) {
         // Convert positions like "A2" to board indices
         int currentRow = Character.getNumericValue(currentPosition.charAt(1)) - 1;
         int currentCol = currentPosition.charAt(0) - 'A';
