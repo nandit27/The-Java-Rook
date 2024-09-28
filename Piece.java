@@ -1,4 +1,4 @@
-package Chess;
+package TheJavaRook;
 
 public abstract class Piece {
     protected String position; // Current position of piece on board

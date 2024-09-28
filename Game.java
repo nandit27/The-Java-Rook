@@ -1,4 +1,4 @@
-package Chess;
+package TheJavaRook;
 
 import java.util.Scanner;
 

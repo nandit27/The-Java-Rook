@@ -1,4 +1,4 @@
-package Chess;
+package TheJavaRook;
 
 public class Pawn extends Piece {
 

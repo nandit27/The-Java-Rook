@@ -1,4 +1,4 @@
-package Chess;
+package TheJavaRook;
 
 public class Main {
     public static void main(String[] args) {

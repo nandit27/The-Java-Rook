@@ -1,8 +1,8 @@
-package Chess;
+package TheJavaRook;
 
-public class Rook extends Piece {
+public class Queen extends Piece {
 
-    public Rook(String position, boolean isWhite) {
+    public Queen(String position, boolean isWhite) {
         super(position, isWhite);
     }
 
@@ -11,7 +11,7 @@ public class Rook extends Piece {
         // Convert positions like "A2" to board indices
         int currentRow = Character.getNumericValue(position.charAt(1)) - 1;
         int currentCol = Character.toUpperCase(position.charAt(0)) - 'A';
-        
+
         int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;
         int newCol = Character.toUpperCase(newPosition.charAt(0)) - 'A';
 
@@ -25,12 +25,12 @@ public class Rook extends Piece {
             return false;  // Can't move to the same position
         }
 
-        // Check if the move is either vertical or horizontal
-        if (currentRow == newRow || currentCol == newCol) {
-            // Check for obstacles between the current position and new position
-            int rowStep = Integer.compare(newRow, currentRow);
-            int colStep = Integer.compare(newCol, currentCol);
-            
+        // Check if the move is vertical, horizontal, or diagonal
+        if (currentRow == newRow || currentCol == newCol || Math.abs(newRow - currentRow) == Math.abs(newCol - currentCol)) {
+            // Check for obstacles in the path
+            int rowStep = Integer.compare(newRow, currentRow);  // Can be -1, 0, or 1
+            int colStep = Integer.compare(newCol, currentCol);  // Can be -1, 0, or 1
+
             int row = currentRow + rowStep;
             int col = currentCol + colStep;
             while (row != newRow || col != newCol) {
@@ -40,10 +40,11 @@ public class Rook extends Piece {
                 row += rowStep;
                 col += colStep;
             }
+
             // Allow the move if the target square is empty or contains an opponent's piece
             return board[newRow][newCol] == null || board[newRow][newCol].isWhite() != isWhite;
         }
 
-        return false;  // Invalid move (not straight line)
+        return false;  // Invalid move
     }
 }
