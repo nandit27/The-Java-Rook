@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public class King extends Piece {
     public King(String position, boolean isWhite) {
         super(position, isWhite);

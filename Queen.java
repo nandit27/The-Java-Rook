@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public class Queen extends Piece {
 
     public Queen(String position, boolean isWhite) {

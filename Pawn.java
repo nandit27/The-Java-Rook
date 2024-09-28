@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public class Pawn extends Piece {
 
     public Pawn(String position, boolean isWhite) {

@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public class ChessBoard {
     private Piece[][] board;
 

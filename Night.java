@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public class Night extends Piece {
 
     public Night(String position, boolean isWhite) {

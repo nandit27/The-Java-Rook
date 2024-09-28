@@ -1,5 +1,3 @@
-package TheJavaRook;
-
 public abstract class Piece {
     protected String position; // Current position of piece on board
     protected boolean isWhite; // Indicate whether piece is white (true) or black (false)
