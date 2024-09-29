@@ -1,5 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ChessUI extends JFrame {
@@ -20,6 +24,16 @@ public class ChessUI extends JFrame {
         ChessPanel panel = new ChessPanel();
         add(panel);
         setVisible(true);
+    }
+    
+    private BufferedImage loadPieceImage(String color, String pieceName) {
+        try {
+            // Update the file path to load the image for the piece
+            return ImageIO.read(new File("pieceImages\\"+color + pieceName + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Return null if the image cannot be loaded
+        }
     }
 
     private class ChessPanel extends JPanel {
@@ -66,8 +80,14 @@ public class ChessUI extends JFrame {
 
                     Piece piece = board.getPieceAt("" + (char) ('A' + col) + (8 - row));
                     if (piece != null) {
-                        g.setColor(piece.isWhite() ? Color.WHITE : Color.BLACK);
-                        g.drawString(piece.getClass().getSimpleName().substring(0, 1), col * tileSize + tileSize / 2, row * tileSize + tileSize / 2);
+                        // Determine the color of the piece and load its image
+                        String color = piece.isWhite() ? "w" : "b";
+                        // Load the image based on the piece's color and type
+                        BufferedImage pieceImage = loadPieceImage(color, piece.getClass().getSimpleName().toLowerCase().substring(0, 1));
+                        if (pieceImage != null) {
+                            // Draw the piece image on the board
+                            g.drawImage(pieceImage, col * tileSize, row * tileSize, tileSize, tileSize, this);
+                        }
                     }
                 }
             }
