@@ -28,37 +28,45 @@ public class ChessUI extends JFrame {
     
     private BufferedImage loadPieceImage(String color, String pieceName) {
         try {
-            // Update the file path to load the image for the piece
-            return ImageIO.read(new File("pieceImages\\"+color + pieceName + ".png"));
+            return ImageIO.read(new File("pieceImages\\" + color + pieceName + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
-            return null; // Return null if the image cannot be loaded
+            return null;
         }
     }
 
     private class ChessPanel extends JPanel {
+        private String highlightedSquare = null;
+
         public ChessPanel() {
             addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    int col = e.getX() / (getWidth() / 8);
-                    int row = e.getY() / (getHeight() / 8);
-                    String position = "" + (char) ('A' + col) + (8 - row);
-
-                    if (selectedPosition == null) {
-                        Piece piece = board.getPieceAt(position);
-                        if (piece != null && piece.isWhite() == isWhiteTurn) {
-                            selectedPosition = position;
-                        }
-                    } else {
-                        if (board.movePiece(selectedPosition, position)) {
-                            isWhiteTurn = !isWhiteTurn;
-                        }
-                        selectedPosition = null;
-                    }
-                    repaint();
+                public void mousePressed(MouseEvent e) {
+                    handleMousePress(e);
                 }
             });
+        }
+
+        private void handleMousePress(MouseEvent e) {
+            int col = e.getX() / (getWidth() / 8);
+            int row = e.getY() / (getHeight() / 8);
+            String position = "" + (char) ('A' + col) + (8 - row);
+
+            if (selectedPosition == null) {
+                Piece piece = board.getPieceAt(position);
+                if (piece != null && piece.isWhite() == isWhiteTurn) {
+                    selectedPosition = position;
+                    highlightedSquare = position;
+                    repaint();
+                }
+            } else {
+                if (board.movePiece(selectedPosition, position)) {
+                    isWhiteTurn = !isWhiteTurn;
+                }
+                selectedPosition = null;
+                highlightedSquare = null;
+                repaint();
+            }
         }
 
         @Override
@@ -71,6 +79,8 @@ public class ChessUI extends JFrame {
             int tileSize = getWidth() / 8;
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
+                    String currentPosition = "" + (char) ('A' + col) + (8 - row);
+                    
                     if ((row + col) % 2 == 0) {
                         g.setColor(new Color(235, 237, 209));
                     } else {
@@ -78,14 +88,17 @@ public class ChessUI extends JFrame {
                     }
                     g.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
 
-                    Piece piece = board.getPieceAt("" + (char) ('A' + col) + (8 - row));
+                    // Highlight selected square
+                    if (currentPosition.equals(highlightedSquare)) {
+                        g.setColor(new Color(255, 255, 0, 100)); // Semi-transparent yellow
+                        g.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+                    }
+
+                    Piece piece = board.getPieceAt(currentPosition);
                     if (piece != null) {
-                        // Determine the color of the piece and load its image
                         String color = piece.isWhite() ? "w" : "b";
-                        // Load the image based on the piece's color and type
                         BufferedImage pieceImage = loadPieceImage(color, piece.getClass().getSimpleName().toLowerCase().substring(0, 1));
                         if (pieceImage != null) {
-                            // Draw the piece image on the board
                             g.drawImage(pieceImage, col * tileSize, row * tileSize, tileSize, tileSize, this);
                         }
                     }
