@@ -39,8 +39,10 @@ public class ChessUI extends JFrame {
     private class ChessPanel extends JPanel {
         private String highlightedSquare = null;
         private int tileSize;
+        private Image infoImage;
 
         public ChessPanel() {
+            infoImage = new ImageIcon("Images\\info.jpg").getImage();
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -109,6 +111,7 @@ public class ChessUI extends JFrame {
                     }
                 }
             }
+            g.drawImage(infoImage, tileSize * 8, 0, (getWidth() - (tileSize * 8)), getHeight(), this);
         }
     }
 
