@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import javax.swing.*;
 
 public class ChessUI extends JFrame {
@@ -18,9 +17,10 @@ public class ChessUI extends JFrame {
         selectedPosition = null;
 
         setTitle("The Java Rook");
-        setSize(600, 600);
+        ImageIcon icon = new ImageIcon("Images\\logo.jpg");
+        setIconImage(icon.getImage()); 
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         ChessPanel panel = new ChessPanel();
         add(panel);
@@ -29,7 +29,7 @@ public class ChessUI extends JFrame {
     
     private BufferedImage loadPieceImage(String color, String pieceName) {
         try {
-            return ImageIO.read(new File("pieceImages\\" + color + pieceName + ".png"));
+            return ImageIO.read(new File("Images\\" + color + pieceName + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
