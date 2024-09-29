@@ -12,8 +12,8 @@ public class ChessUI extends JFrame {
         isWhiteTurn = true;
         selectedPosition = null;
 
-        setTitle("Chess Game");
-        setSize(600, 600);
+        setTitle("The Java Rook");
+        setSize(600, 620);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -58,9 +58,9 @@ public class ChessUI extends JFrame {
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
                     if ((row + col) % 2 == 0) {
-                        g.setColor(Color.WHITE);
+                        g.setColor(new Color(235, 237, 209));
                     } else {
-                        g.setColor(Color.GRAY);
+                        g.setColor(new Color(114, 149, 83));
                     }
                     g.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
 
