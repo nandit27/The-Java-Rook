@@ -55,7 +55,6 @@ public class ChessBoard {
             board[currentRow][currentCol] = null;
             return true;
         } else {
-            System.out.println("Invalid move!");
             return false;
         }
     }

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.*;
 
 public class ChessUI extends JFrame {
@@ -17,7 +18,7 @@ public class ChessUI extends JFrame {
         selectedPosition = null;
 
         setTitle("The Java Rook");
-        setSize(600, 620);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -37,6 +38,7 @@ public class ChessUI extends JFrame {
 
     private class ChessPanel extends JPanel {
         private String highlightedSquare = null;
+        private int tileSize;
 
         public ChessPanel() {
             addMouseListener(new MouseAdapter() {
@@ -48,8 +50,8 @@ public class ChessUI extends JFrame {
         }
 
         private void handleMousePress(MouseEvent e) {
-            int col = e.getX() / (getWidth() / 8);
-            int row = e.getY() / (getHeight() / 8);
+            int col = e.getX() / (tileSize);
+            int row = e.getY() / (tileSize);
             String position = "" + (char) ('A' + col) + (8 - row);
 
             if (selectedPosition == null) {
@@ -62,6 +64,9 @@ public class ChessUI extends JFrame {
             } else {
                 if (board.movePiece(selectedPosition, position)) {
                     isWhiteTurn = !isWhiteTurn;
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Play a Valid move :(", "Invalid Move!", JOptionPane.INFORMATION_MESSAGE);
                 }
                 selectedPosition = null;
                 highlightedSquare = null;
@@ -76,7 +81,7 @@ public class ChessUI extends JFrame {
         }
 
         private void drawBoard(Graphics g) {
-            int tileSize = getWidth() / 8;
+            tileSize = getHeight() / 8;
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
                     String currentPosition = "" + (char) ('A' + col) + (8 - row);
