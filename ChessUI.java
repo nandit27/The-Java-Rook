@@ -54,25 +54,27 @@ public class ChessUI extends JFrame {
         private void handleMousePress(MouseEvent e) {
             int col = e.getX() / (tileSize);
             int row = e.getY() / (tileSize);
-            String position = "" + (char) ('A' + col) + (8 - row);
-
-            if (selectedPosition == null) {
-                Piece piece = board.getPieceAt(position);
-                if (piece != null && piece.isWhite() == isWhiteTurn) {
-                    selectedPosition = position;
-                    highlightedSquare = position;
+            if ((row >= 0 && row <=7) && (col >= 0 && col <=7)) {
+                String position = "" + (char) ('A' + col) + (8 - row);
+    
+                if (selectedPosition == null) {
+                    Piece piece = board.getPieceAt(position);
+                    if (piece != null && piece.isWhite() == isWhiteTurn) {
+                        selectedPosition = position;
+                        highlightedSquare = position;
+                        repaint();
+                    }
+                } else {
+                    if (board.movePiece(selectedPosition, position)) {
+                        isWhiteTurn = !isWhiteTurn;
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this, "Play a Valid move :(", "Invalid Move!", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    selectedPosition = null;
+                    highlightedSquare = null;
                     repaint();
                 }
-            } else {
-                if (board.movePiece(selectedPosition, position)) {
-                    isWhiteTurn = !isWhiteTurn;
-                }
-                else {
-                    JOptionPane.showMessageDialog(this, "Play a Valid move :(", "Invalid Move!", JOptionPane.INFORMATION_MESSAGE);
-                }
-                selectedPosition = null;
-                highlightedSquare = null;
-                repaint();
             }
         }
 
