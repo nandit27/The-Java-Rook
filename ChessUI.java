@@ -57,7 +57,7 @@ public class ChessUI extends JFrame {
             if ((row >= 0 && row <=7) && (col >= 0 && col <=7)) {
                 String position = "" + (char) ('A' + col) + (8 - row);
     
-                if (selectedPosition == null) {
+                if ((selectedPosition == null) || hasSelectedSameColor(selectedPosition, position)) {
                     Piece piece = board.getPieceAt(position);
                     if (piece != null && piece.isWhite() == isWhiteTurn) {
                         selectedPosition = position;
@@ -76,6 +76,10 @@ public class ChessUI extends JFrame {
                     repaint();
                 }
             }
+        }
+
+        private boolean hasSelectedSameColor(String selectedPosition, String position) {
+            return (board.getPieceAt(position) != null) && ((board.getPieceAt(selectedPosition).isWhite()) == (board.getPieceAt(position).isWhite()));
         }
 
         @Override
