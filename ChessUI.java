@@ -17,7 +17,7 @@ public class ChessUI extends JFrame {
         selectedPosition = null;
 
         setTitle("The Java Rook");
-        ImageIcon icon = new ImageIcon("Images\\logo.jpg");
+        ImageIcon icon = new ImageIcon("logo.jpg");
         setIconImage(icon.getImage()); 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,7 +29,7 @@ public class ChessUI extends JFrame {
     
     private BufferedImage loadPieceImage(String color, String pieceName) {
         try {
-            return ImageIO.read(new File("Images\\" + color + pieceName + ".png"));
+            return ImageIO.read(new File(color + pieceName + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -42,7 +42,7 @@ public class ChessUI extends JFrame {
         private Image infoImage;
 
         public ChessPanel() {
-            infoImage = new ImageIcon("Images\\info.jpg").getImage();
+            infoImage = new ImageIcon("info.jpg").getImage();
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
