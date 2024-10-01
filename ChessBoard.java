@@ -48,16 +48,37 @@ public class ChessBoard {
         int newCol = newPosition.charAt(0) - 'A';
 
         Piece piece = board[currentRow][currentCol];
-        if (piece != null && piece.isValidMove(newPosition, board)) {
+        if (piece != null && piece.isValidMove(newPosition, board)/* && isKingSafe(piece)*/) {
             // Move piece to new position
             board[newRow][newCol] = piece;
             piece.setPosition(newPosition);
             board[currentRow][currentCol] = null;
+
+            //Update the positionOfKing for all the pieces currently on the board 
+            if (piece.getClass().getSimpleName() == "King") {
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (board[i][j] != null && board[i][j].isWhite == piece.isWhite) {
+                            board[i][j].positionOfKing = newPosition;
+                        }
+                    }
+                }
+            }
             return true;
         } else {
             return false;
         }
     }
+
+    // public boolean isKingSafe(Piece piece) {
+    //     String currentlyPlayingKing = piece.positionOfKing;
+    //     boolean isOpponentWhite = !piece.isWhite;
+    //     int currentRow = Character.getNumericValue(currentlyPlayingKing.charAt(1)) - 1;
+    //     int currentCol = Character.toUpperCase(currentlyPlayingKing.charAt(0)) - 'A';
+
+    //     //Check for safety from each piece here
+    //     return true;
+    // }
 
     public Piece getPieceAt(String position) {
         int row = Character.getNumericValue(position.charAt(1)) - 1;

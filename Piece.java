@@ -1,11 +1,17 @@
 public abstract class Piece {
     protected String position; // Current position of piece on board
     protected boolean isWhite; // Indicate whether piece is white (true) or black (false)
+    protected String positionOfKing;
     
     // Constructor to initialize the piece's position and color
     public Piece(String position, boolean isWhite) {
         this.position = position;
         this.isWhite = isWhite;
+        if (isWhite) {
+            positionOfKing = "E1";
+        } else {
+            positionOfKing = "E8";
+        }
     }
 
     // Each specific piece will implement this method to define its own movement rules
