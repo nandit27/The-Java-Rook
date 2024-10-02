@@ -40,7 +40,7 @@ public class ChessBoard {
         }
     }
 
-    public boolean movePiece(String currentPosition, String newPosition) {
+    public String movePiece(String currentPosition, String newPosition) {
         // Convert positions like "A2" to board indices
         int currentRow = Character.getNumericValue(currentPosition.charAt(1)) - 1;
         int currentCol = currentPosition.charAt(0) - 'A';
@@ -50,7 +50,7 @@ public class ChessBoard {
         Piece piece = board[currentRow][currentCol];
         if (piece != null && piece.isValidMove(newPosition, board)) {
             // Move piece to new position
-            Piece temPiece = board[newRow][newCol];
+            Piece tempPiece = board[newRow][newCol];
             board[newRow][newCol] = piece;
             piece.setPosition(newPosition);
             board[currentRow][currentCol] = null;
@@ -66,8 +66,15 @@ public class ChessBoard {
                 }
             }
 
+            String checkmateStatus = isOpponentCheckmate(piece);
+            if (checkmateStatus.equals("true")) {
+                return "White Wins";
+            } else if (checkmateStatus.equals("false")) {
+                return "Black Wins";
+            }
+
             if(!isKingSafe(piece, newPosition)) {
-                board[newRow][newCol] = temPiece;
+                board[newRow][newCol] = tempPiece;
                 piece.setPosition(currentPosition);
                 board[currentRow][currentCol] = piece;
                 
@@ -80,11 +87,11 @@ public class ChessBoard {
                         }
                     }
                 }
-                return false;
+                return "Your King is in Check";
             }
-            return true;
+            return "Valid Move";
         } else {
-            return false;
+            return "Invalid Move";
         }
     }
 
@@ -103,6 +110,70 @@ public class ChessBoard {
         && isSafeInDiagonals(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol)
         && isSafeAlongAxes(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol);
     }
+
+    private String isOpponentCheckmate(Piece piece) {
+        boolean isCurrentPlayerWhite = piece.isWhite;
+        boolean stillInCheck = true;
+        
+        // Check for all opponent's pieces to see if any can make a valid move to such that they aren't in check
+        for (int k = 0; k < 8; k++) {
+            for (int l = 0; l < 8; l++) {
+                Piece currentPiece = board[k][l];
+                if (currentPiece != null && currentPiece.isWhite != isCurrentPlayerWhite) {
+                    String currentPosition = currentPiece.getPosition();
+                    // Try all possible moves for this piece
+                    for (int newRow = 0; newRow < 8; newRow++) {
+                        for (int newCol = 0; newCol < 8; newCol++) {
+                            String newPosition = "" + (char) ('A' + newCol) + (newRow + 1);
+                            if (currentPiece != null && currentPiece.isValidMove(newPosition, board)) {
+                                // Move currentPiece to new position
+                                Piece tempPiece = board[newRow][newCol];
+                                board[newRow][newCol] = currentPiece;
+                                currentPiece.setPosition(newPosition);
+                                board[k][l] = null;
+                    
+                                //Update the positionOfKing for all the pieces currently on the board 
+                                if (currentPiece.getClass().getSimpleName().equals("King")) {
+                                    for (int i = 0; i < 8; i++) {
+                                        for (int j = 0; j < 8; j++) {
+                                            if (board[i][j] != null && board[i][j].isWhite == currentPiece.isWhite) {
+                                                board[i][j].positionOfKing = newPosition;
+                                            }
+                                        }
+                                    }
+                                }
+                    
+                                stillInCheck = !isKingSafe(currentPiece, newPosition);
+                                board[newRow][newCol] = tempPiece;
+                                currentPiece.setPosition(currentPosition);
+                                board[k][l] = currentPiece;
+            
+                                if (currentPiece.getClass().getSimpleName().equals("King")) {
+                                    for (int i = 0; i < 8; i++) {
+                                        for (int j = 0; j < 8; j++) {
+                                            if (board[i][j] != null && board[i][j].isWhite == currentPiece.isWhite) {
+                                                board[i][j].positionOfKing = currentPosition;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!stillInCheck) {
+                                    return "No";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // // Check if the opponent's king is in check
+        // if (stillInCheck) {
+            
+        // }
+        // If no moves can escape check, it's checkmate
+        return "" + (piece.isWhite);
+    }
+    
     
     private boolean isSafeFromPawn(boolean isOpponentWhite, int rowOfKing, int colOfKing) {
         if (isOpponentWhite) {

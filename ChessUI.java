@@ -65,12 +65,18 @@ public class ChessUI extends JFrame {
                         repaint();
                     }
                 } else {
-                    if (board.movePiece(selectedPosition, position)) {
+                    String moveStatus = board.movePiece(selectedPosition, position);
+                    if (moveStatus.equals("Valid Move")) {
                         isWhiteTurn = !isWhiteTurn;
-                    }
-                    else {
+                    } else if (moveStatus.equals("Invalid Move")) {
                         JOptionPane.showMessageDialog(this, "Play a Valid move :(", "Invalid Move!", JOptionPane.INFORMATION_MESSAGE);
-                    }
+                    } else if (moveStatus.equals("Your King is in Check")) {
+                        JOptionPane.showMessageDialog(this, moveStatus, "Check! Check!", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (moveStatus.equals("White Wins")) {
+                        JOptionPane.showMessageDialog(this, moveStatus, "Checkmate!", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (moveStatus.equals("Black Wins")) {
+                        JOptionPane.showMessageDialog(this, moveStatus, "Checkmate!", JOptionPane.INFORMATION_MESSAGE);
+                    } 
                     selectedPosition = null;
                     highlightedSquare = null;
                     repaint();
