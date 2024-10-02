@@ -95,11 +95,55 @@ public class ChessBoard {
         int colOfKing = Character.toUpperCase(currentlyPlayingKing.charAt(0)) - 'A';
         int blockRow = Character.getNumericValue(blockingPiece.charAt(1)) - 1;
         int blockCol = Character.toUpperCase(blockingPiece.charAt(0)) - 'A';
-
+        
         //Check for safety from each piece here
         return 
-        isSafeInDiagonals(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol)
+        isSafeFromPawn(isOpponentWhite, rowOfKing, colOfKing)
+        && isSafeFromKnight(isOpponentWhite, rowOfKing, colOfKing)
+        && isSafeInDiagonals(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol)
         && isSafeAlongAxes(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol);
+    }
+    
+    private boolean isSafeFromPawn(boolean isOpponentWhite, int rowOfKing, int colOfKing) {
+        return true;
+    }
+    
+    private boolean isSafeFromKnight(boolean isOpponentWhite, int rowOfKing, int colOfKing) {
+        int[] diffs1 = {-1, 1};
+        int[] diffs2 = {-2, 2};
+        for (int diff : diffs1) {
+            for (int diff2 : diffs2) {
+                try {
+                    if (board[rowOfKing + diff][colOfKing + diff2] != null) {
+                        if (board[rowOfKing + diff][colOfKing + diff2].isWhite == isOpponentWhite) {
+                            String checkingPiece = board[rowOfKing + diff][colOfKing + diff2].getClass().getSimpleName();
+                            if (checkingPiece.equals("Night")) {
+                                return false;
+                            }
+                        }
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    continue;
+                }
+            }
+        }
+        for (int diff : diffs1) {
+            for (int diff2 : diffs2) {
+                try {
+                    if (board[rowOfKing + diff2][colOfKing + diff] != null) {
+                        if (board[rowOfKing + diff2][colOfKing + diff].isWhite == isOpponentWhite) {
+                            String checkingPiece = board[rowOfKing + diff2][colOfKing + diff].getClass().getSimpleName();
+                            if (checkingPiece.equals("Night")) {
+                                return false;
+                            }
+                        }
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    continue;
+                }
+            }
+        }
+        return true;
     }
 
     private boolean isSafeInDiagonals(boolean isOpponentWhite, int rowOfKing, int colOfKing, int blockRow, int blockCol) {
