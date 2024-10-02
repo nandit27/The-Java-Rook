@@ -97,7 +97,9 @@ public class ChessBoard {
         int blockCol = Character.toUpperCase(blockingPiece.charAt(0)) - 'A';
 
         //Check for safety from each piece here
-        return isSafeInDiagonals(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol);
+        return 
+        isSafeInDiagonals(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol)
+        && isSafeAlongAxes(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol);
     }
 
     private boolean isSafeInDiagonals(boolean isOpponentWhite, int rowOfKing, int colOfKing, int blockRow, int blockCol) {
@@ -195,6 +197,93 @@ public class ChessBoard {
             }
             row--;
             col--;
+        }
+        return true;
+    }
+    private boolean isSafeAlongAxes(boolean isOpponentWhite, int rowOfKing, int colOfKing, int blockRow, int blockCol) {
+        int row = rowOfKing;
+        int col = colOfKing;
+        while (col >= 0) {
+            if (col == colOfKing) {
+                col--;
+                continue;
+            }
+            if (blockRow == row && blockCol == col) {
+                return true;
+            }
+            if (board[row][col] != null) {
+                if (board[row][col].isWhite == isOpponentWhite) {
+                    String obstructingPiece = board[row][col].getClass().getSimpleName();
+                    if (obstructingPiece.equals("Queen") || obstructingPiece.equals("Rook")) {
+                        return false;
+                    }
+                }
+                break;
+            }
+            col--;
+        }
+        
+        col = colOfKing;
+        while (col <= 7) {
+            if (col == colOfKing) {
+                col++;
+                continue;
+            }
+            if (blockRow == row && blockCol == col) {
+                return true;
+            }
+            if (board[row][col] != null) {
+                if (board[row][col].isWhite == isOpponentWhite) {
+                    String obstructingPiece = board[row][col].getClass().getSimpleName();
+                    if (obstructingPiece.equals("Queen") || obstructingPiece.equals("Rook")) {
+                        return false;
+                    }
+                }
+                break;
+            }
+            col++;
+        }
+
+        col = colOfKing;
+        while (row >= 0) {
+            if (row == rowOfKing) {
+                row--;
+                continue;
+            }
+            if (blockRow == row && blockCol == col) {
+                return true;
+            }
+            if (board[row][col] != null) {
+                if (board[row][col].isWhite == isOpponentWhite) {
+                    String obstructingPiece = board[row][col].getClass().getSimpleName();
+                    if (obstructingPiece.equals("Queen") || obstructingPiece.equals("Rook")) {
+                        return false;
+                    }
+                }
+                break;
+            }
+            row--;
+        }
+
+        row = rowOfKing;
+        while (row <= 7) {
+            if (row == rowOfKing) {
+                row++;
+                continue;
+            }
+            if (blockRow == row && blockCol == col) {
+                return true;
+            }
+            if (board[row][col] != null) {
+                if (board[row][col].isWhite == isOpponentWhite) {
+                    String obstructingPiece = board[row][col].getClass().getSimpleName();
+                    if (obstructingPiece.equals("Queen") || obstructingPiece.equals("Rook")) {
+                        return false;
+                    }
+                }
+                break;
+            }
+            row++;
         }
         return true;
     }
