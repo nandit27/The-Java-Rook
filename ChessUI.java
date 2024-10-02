@@ -52,8 +52,8 @@ public class ChessUI extends JFrame {
         }
 
         private void handleMousePress(MouseEvent e) {
-            int col = e.getX() / (tileSize);
-            int row = e.getY() / (tileSize);
+            int col = (isWhiteTurn) ? e.getX() / (tileSize) : 7 - (e.getX() / (tileSize));
+            int row = (isWhiteTurn) ? e.getY() / (tileSize) : 7 - (e.getY() / (tileSize));
             if ((row >= 0 && row <=7) && (col >= 0 && col <=7)) {
                 String position = "" + (char) ('A' + col) + (8 - row);
     
@@ -92,7 +92,7 @@ public class ChessUI extends JFrame {
             tileSize = getHeight() / 8;
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
-                    String currentPosition = "" + (char) ('A' + col) + (8 - row);
+                    String currentPosition = (isWhiteTurn)? "" + (char) ('A' + col) + (8 - row) : "" + (char) ('H' - col) + (row + 1);
                     
                     if ((row + col) % 2 == 0) {
                         g.setColor(new Color(235, 237, 209));
