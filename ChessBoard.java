@@ -270,7 +270,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -294,7 +294,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -318,7 +318,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -342,7 +342,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -367,7 +367,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -388,7 +388,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -409,7 +409,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
@@ -430,7 +430,7 @@ public class ChessBoard {
                 continue;
             }
             if (blockRow == row && blockCol == col) {
-                return true;
+                break;
             }
             if (board[row][col] != null) {
                 if (board[row][col].isWhite == isOpponentWhite) {
