@@ -105,6 +105,49 @@ public class ChessBoard {
     }
     
     private boolean isSafeFromPawn(boolean isOpponentWhite, int rowOfKing, int colOfKing) {
+        if (isOpponentWhite) {
+            try {
+                if (board[rowOfKing - 1][colOfKing - 1] != null) {
+                    if (board[rowOfKing - 1][colOfKing - 1].isWhite) {
+                        String checkingPiece = board[rowOfKing - 1][colOfKing - 1].getClass().getSimpleName();
+                        if (checkingPiece.equals("Pawn")) {
+                            return false;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {}
+            try {
+                if (board[rowOfKing - 1][colOfKing + 1] != null) {
+                    if (board[rowOfKing - 1][colOfKing + 1].isWhite) {
+                        String checkingPiece = board[rowOfKing - 1][colOfKing + 1].getClass().getSimpleName();
+                        if (checkingPiece.equals("Pawn")) {
+                            return false;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {}
+        } else {
+            try {
+                if (board[rowOfKing + 1][colOfKing - 1] != null) {
+                    if (!board[rowOfKing + 1][colOfKing - 1].isWhite) {
+                        String checkingPiece = board[rowOfKing + 1][colOfKing - 1].getClass().getSimpleName();
+                        if (checkingPiece.equals("Pawn")) {
+                            return false;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {}
+            try {
+                if (board[rowOfKing + 1][colOfKing + 1] != null) {
+                    if (!board[rowOfKing + 1][colOfKing + 1].isWhite) {
+                        String checkingPiece = board[rowOfKing + 1][colOfKing + 1].getClass().getSimpleName();
+                        if (checkingPiece.equals("Pawn")) {
+                            return false;
+                        }
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {}
+        }
         return true;
     }
     
