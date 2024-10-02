@@ -76,6 +76,8 @@ public class ChessUI extends JFrame {
                         JOptionPane.showMessageDialog(this, moveStatus, "Checkmate!", JOptionPane.INFORMATION_MESSAGE);
                     } else if (moveStatus.equals("Black Wins")) {
                         JOptionPane.showMessageDialog(this, moveStatus, "Checkmate!", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (moveStatus.equals("Stalemate")) {
+                        JOptionPane.showMessageDialog(this, moveStatus, "Draw!", JOptionPane.INFORMATION_MESSAGE);
                     } 
                     selectedPosition = null;
                     highlightedSquare = null;

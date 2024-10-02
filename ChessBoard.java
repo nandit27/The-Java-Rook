@@ -66,11 +66,13 @@ public class ChessBoard {
                 }
             }
 
-            String checkmateStatus = isOpponentCheckmate(piece);
-            if (checkmateStatus.equals("true")) {
+            String gameEndStatus = hasGameEnded(piece);
+            if (gameEndStatus.equals("true")) {
                 return "White Wins";
-            } else if (checkmateStatus.equals("false")) {
+            } else if (gameEndStatus.equals("false")) {
                 return "Black Wins";
+            } else if (gameEndStatus.equals("Stalemate")) {
+                return "Stalemate";
             }
 
             if(!isKingSafe(piece, newPosition)) {
@@ -111,9 +113,25 @@ public class ChessBoard {
         && isSafeAlongAxes(isOpponentWhite, rowOfKing, colOfKing, blockRow, blockCol);
     }
 
-    private String isOpponentCheckmate(Piece piece) {
+    private String hasGameEnded(Piece piece) {
         boolean isCurrentPlayerWhite = piece.isWhite;
-        boolean stillInCheck = true;
+        Piece opponentKing = null;
+        boolean isOpponentInCheck = false;
+
+        // Find the king of Opponent
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j] != null && board[i][j].isWhite != isCurrentPlayerWhite && board[i][j].getClass().getSimpleName() == "King") {
+                    opponentKing = board[i][j];
+                    break;
+                }
+            }
+            if (opponentKing != null) {
+                break;
+            }
+        }
+
+        isOpponentInCheck = !isKingSafe(opponentKing, opponentKing.getPosition());
         
         // Check for all opponent's pieces to see if any can make a valid move to such that they aren't in check
         for (int k = 0; k < 8; k++) {
@@ -143,7 +161,7 @@ public class ChessBoard {
                                     }
                                 }
                     
-                                stillInCheck = !isKingSafe(currentPiece, newPosition);
+                                boolean stillInCheck = !isKingSafe(currentPiece, newPosition);
                                 board[newRow][newCol] = tempPiece;
                                 currentPiece.setPosition(currentPosition);
                                 board[k][l] = currentPiece;
@@ -166,12 +184,9 @@ public class ChessBoard {
                 }
             }
         }
-        // // Check if the opponent's king is in check
-        // if (stillInCheck) {
-            
-        // }
-        // If no moves can escape check, it's checkmate
-        return "" + (piece.isWhite);
+
+        // If no moves can escape check, Game has Ended.
+        return (isOpponentInCheck)? "" + (piece.isWhite) : "Stalemate";
     }
     
     
