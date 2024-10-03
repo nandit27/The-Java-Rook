@@ -128,8 +128,4 @@ public class ChessUI extends JFrame {
             g.drawImage(infoImage, tileSize * 8, 0, (getWidth() - (tileSize * 8)), getHeight(), this);
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(ChessUI::new);
-    }
 }
