@@ -5,7 +5,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isValidMove(String newPosition, Piece[][] board) {
+    public String isValidMove(String newPosition, Piece[][] board) {
         // Convert positions like "A2" to board indices
         int currentRow = Character.getNumericValue(position.charAt(1)) - 1;  // '2' -> 6
         int currentCol = Character.toUpperCase(position.charAt(0)) - 'A';  // 'A' -> 0
@@ -15,7 +15,7 @@ public class Pawn extends Piece {
 
         // Ensure within board limits
         if (newRow < 0 || newRow > 7 || newCol < 0 || newCol > 7) {
-            return false;  // Out of bounds
+            return "Out of bounds";
         }
 
         // Determine the direction of movement based on color (White moves "up", Black moves "down")
@@ -23,23 +23,29 @@ public class Pawn extends Piece {
 
         // Basic move (one square forward)
         if (newCol == currentCol && newRow == currentRow + direction) {
-            return board[newRow][newCol] == null;  // Only move forward if the square is empty
+            if (board[newRow][newCol] == null) {
+                return "Valid Move";
+            }  // Only move forward if the square is empty
         }
 
         // Initial two-square move
-        if (newCol == currentCol && newRow == currentRow + 2 * direction) {
+        else if (newCol == currentCol && newRow == currentRow + 2 * direction) {
             // Pawns can move two squares forward only if they're at their initial position and both squares are empty
             if ((isWhite && currentRow == 1) || (!isWhite && currentRow == 6)) {
-                return board[newRow][newCol] == null && board[currentRow + direction][currentCol] == null;
+                if (board[newRow][newCol] == null && board[currentRow + direction][currentCol] == null) {
+                    return "Valid Move";
+                }
             }
         }
 
         // Capture move (diagonal move)
-        if (Math.abs(newCol - currentCol) == 1 && newRow == currentRow + direction) {
+        else if (Math.abs(newCol - currentCol) == 1 && newRow == currentRow + direction) {
             Piece target = board[newRow][newCol];
-            return target != null && target.isWhite() != isWhite;  // Capture only if the target piece is of the opposite color
+            if (target != null && target.isWhite() != isWhite) {
+                return "Valid Move";
+            }  // Capture only if the target piece is of the opposite color
         }
 
-        return false;  // If none of the conditions are met, the move is invalid
+        return "Invalid Move";
     }
 }

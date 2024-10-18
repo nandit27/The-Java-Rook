@@ -48,7 +48,43 @@ public class ChessBoard {
         int newCol = newPosition.charAt(0) - 'A';
 
         Piece piece = board[currentRow][currentCol];
-        if (piece != null && piece.isValidMove(newPosition, board)) {
+        String moveValidity = piece.isValidMove(newPosition, board);
+        if (piece != null && !moveValidity.equals("Invalid Move")) {
+            // Special Move (Castling)
+            if (moveValidity.equals("Castling to G1")) {
+                if (isKingSafe(piece, "F1")) {
+                    board[0][5] = board[0][7];
+                    board[0][7].setPosition("F1");
+                    board[0][7] = null;
+                } else {
+                    return "Invalid Move";
+                }
+            } else if (moveValidity.equals("Castling to C1")) {
+                if (isKingSafe(piece, "D1")) {
+                    board[0][3] = board[0][0];
+                    board[0][0].setPosition("D1");
+                    board[0][0] = null;
+                } else {
+                    return "Invalid Move";
+                }
+            } else if (moveValidity.equals("Castling to G8")) {
+                if (isKingSafe(piece, "F8")) {
+                    board[7][5] = board[7][7];
+                    board[7][7].setPosition("F1");
+                    board[7][7] = null;
+                } else {
+                    return "Invalid Move";
+                }
+            } else if (moveValidity.equals("Castling to C8")) {
+                if (isKingSafe(piece, "D8")) {
+                    board[7][3] = board[7][0];
+                    board[7][0].setPosition("D8");
+                    board[7][0] = null;
+                } else {
+                    return "Invalid Move";
+                }
+            }
+
             // Move piece to new position
             Piece tempPiece = board[newRow][newCol];
             board[newRow][newCol] = piece;
@@ -76,6 +112,25 @@ public class ChessBoard {
             }
 
             if(!isKingSafe(piece, newPosition)) {
+                // Undo Castling Effect to the Rooks
+                if (moveValidity.equals("Castling to G1")) {
+                    board[0][7] = board[0][5];
+                    board[0][5].setPosition("H1");
+                    board[0][5] = null;
+                } else if (moveValidity.equals("Castling to C1")) {
+                    board[0][0] = board[0][3];
+                    board[0][3].setPosition("D1");
+                    board[0][3] = null;
+                } else if (moveValidity.equals("Castling to G8")) {
+                    board[7][7] = board[7][5];
+                    board[7][5].setPosition("F1");
+                    board[7][5] = null;
+                } else if (moveValidity.equals("Castling to C8")) {
+                    board[7][0] = board[7][3];
+                    board[7][3].setPosition("D8");
+                    board[7][3] = null;
+                }
+
                 board[newRow][newCol] = tempPiece;
                 piece.setPosition(currentPosition);
                 board[currentRow][currentCol] = piece;
@@ -89,7 +144,11 @@ public class ChessBoard {
                         }
                     }
                 }
-                return "Your King is in Check";
+                return "Check";
+            }
+
+            if ((piece instanceof Rook) || (piece instanceof King)){
+                piece.hasMoved = true;
             }
             return "Valid Move";
         } else {
@@ -143,7 +202,7 @@ public class ChessBoard {
                     for (int newRow = 0; newRow < 8; newRow++) {
                         for (int newCol = 0; newCol < 8; newCol++) {
                             String newPosition = "" + (char) ('A' + newCol) + (newRow + 1);
-                            if (currentPiece != null && currentPiece.isValidMove(newPosition, board)) {
+                            if (currentPiece != null && !currentPiece.isValidMove(newPosition, board).equals("Invalid Move")) {
                                 // Move currentPiece to new position
                                 Piece tempPiece = board[newRow][newCol];
                                 board[newRow][newCol] = currentPiece;

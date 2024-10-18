@@ -5,7 +5,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean isValidMove(String newPosition, Piece[][] board) {
+    public String isValidMove(String newPosition, Piece[][] board) {
 
         // Convert positions like "C1" to board indices
         int currentRow = Character.getNumericValue(position.charAt(1)) - 1;  // '1' -> 7
@@ -16,12 +16,12 @@ public class Bishop extends Piece {
 
         // Ensure within board limits
         if (newRow < 0 || newRow > 7 || newCol < 0 || newCol > 7) {
-            return false;  // Out of bounds
+            return "Out of bounds";
         }
 
         // Prevent moving to the same position
         if (newPosition.equals(position)) {
-            return false;  // Can't move to the same position
+            return "Can't move to the same position";
         }
 
         // Check if the move is diagonal (difference in rows == difference in columns)
@@ -37,16 +37,18 @@ public class Bishop extends Piece {
             
             while (tempRow != newRow && tempCol != newCol) {
                 if (board[tempRow][tempCol] != null) {
-                    return false;  // If any square along the path is occupied, the move is invalid
+                    return "Invalid Move";  // Blocked by another piece
                 }
                 tempRow += rowDirection;
                 tempCol += colDirection;
             }
     
             // Allow the move if the target square is empty or contains an opponent's piece
-            return board[newRow][newCol] == null || board[newRow][newCol].isWhite() != isWhite;
+            if (board[newRow][newCol] == null || board[newRow][newCol].isWhite() != isWhite) {
+                return "Valid Move";
+            }
         }
 
-        return false;  // Invalid Move
+        return "Invalid Move";
     }
 }
