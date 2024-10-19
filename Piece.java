@@ -3,6 +3,7 @@ public abstract class Piece {
     protected boolean isWhite; // Indicate whether piece is white (true) or black (false)
     protected String positionOfKing;
     protected boolean hasMoved = false;
+    protected boolean justMoved = false;
     
     // Constructor to initialize the piece's position and color
     public Piece(String position, boolean isWhite) {
@@ -17,15 +18,6 @@ public abstract class Piece {
 
     // Each specific piece will implement this method to define its own movement rules
     public abstract String isValidMove(String newPosition, Piece[][] board);
-
-    // Method to move the piece to a new position if move is valid
-    public void move(String newPosition, Piece[][] board) {
-        if (isValidMove(newPosition, board).equals("Valid Move")) {
-            this.position = newPosition;
-        } else {
-            System.out.println("Invalid Move!");
-        }
-    }
 
     // Method to get position of piece
     public String getPosition() {

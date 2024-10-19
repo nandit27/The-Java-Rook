@@ -91,7 +91,14 @@ public class ChessBoard {
             piece.setPosition(newPosition);
             board[currentRow][currentCol] = null;
 
-            //Update the positionOfKing for all the pieces currently on the board 
+            // Special Move (En-Passant)
+            Piece enPassantCaptured = null;
+            if (moveValidity.startsWith("En-Passant")) {
+                enPassantCaptured = board[currentRow][newCol];
+                board[currentRow][newCol] = null;
+            }
+
+            // Update the positionOfKing for all the pieces currently on the board 
             if (piece.getClass().getSimpleName().equals("King")) {
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
@@ -131,10 +138,17 @@ public class ChessBoard {
                     board[7][3] = null;
                 }
 
+                // Undo En-Passant Capture 
+                if (moveValidity.startsWith("En-Passant")) {
+                    board[currentRow][newCol] = enPassantCaptured;
+                }
+
+                // Undo Normal Move
                 board[newRow][newCol] = tempPiece;
                 piece.setPosition(currentPosition);
                 board[currentRow][currentCol] = piece;
                 
+                // Undo Update of Position of King
                 if (piece.getClass().getSimpleName().equals("King")) {
                     for (int i = 0; i < 8; i++) {
                         for (int j = 0; j < 8; j++) {
@@ -150,6 +164,16 @@ public class ChessBoard {
             if ((piece instanceof Rook) || (piece instanceof King)){
                 piece.hasMoved = true;
             }
+
+            // Only Immediate En-Passant is allowed
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (board[i][j] != null && board[i][j].isWhite != piece.isWhite) {
+                        board[i][j].justMoved = false;
+                    }
+                }
+            }
+
             return "Valid Move";
         } else {
             return "Invalid Move";

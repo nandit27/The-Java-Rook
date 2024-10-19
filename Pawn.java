@@ -33,6 +33,7 @@ public class Pawn extends Piece {
             // Pawns can move two squares forward only if they're at their initial position and both squares are empty
             if ((isWhite && currentRow == 1) || (!isWhite && currentRow == 6)) {
                 if (board[newRow][newCol] == null && board[currentRow + direction][currentCol] == null) {
+                    justMoved = true;
                     return "Valid Move";
                 }
             }
@@ -41,11 +42,34 @@ public class Pawn extends Piece {
         // Capture move (diagonal move)
         else if (Math.abs(newCol - currentCol) == 1 && newRow == currentRow + direction) {
             Piece target = board[newRow][newCol];
-            if (target != null && target.isWhite() != isWhite) {
-                return "Valid Move";
-            }  // Capture only if the target piece is of the opposite color
+            if (target != null) {
+                if (target.isWhite() != isWhite) {
+                    return "Valid Move";
+                }
+            } else {
+                if (newCol - currentCol == -1) {
+                    try {   
+                        Piece leftPiece = board[currentRow][currentCol - 1];
+                        if (isWhite && currentRow == 4 && leftPiece != null && !leftPiece.isWhite && leftPiece.justMoved) {
+                            return "En-Passant " + (newCol);
+                        }
+                        if (!isWhite && currentRow == 3 && leftPiece != null && leftPiece.isWhite && leftPiece.justMoved) {
+                            return "En-Passant " + (newCol);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {}
+                } else {
+                    try {   
+                        Piece rightPiece = board[currentRow][currentCol + 1];
+                        if (isWhite && currentRow == 4 && rightPiece != null && !rightPiece.isWhite && rightPiece.justMoved) {
+                            return "En-Passant " + (newCol);
+                        }
+                        if (!isWhite && currentRow == 3 && rightPiece != null && rightPiece.isWhite && rightPiece.justMoved) {
+                            return "En-Passant " + (newCol);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {}
+                }
+            }
         }
-
         return "Invalid Move";
     }
 }
