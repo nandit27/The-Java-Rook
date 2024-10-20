@@ -174,6 +174,16 @@ public class ChessBoard {
                 }
             }
 
+            if (piece instanceof Pawn) {
+                if (piece.isWhite) {
+                    if (newRow == 7) {
+                        return "White's Pawn Promotion";
+                    }
+                } else if (newRow == 0) {
+                    return "Black's Pawn Promotion";
+                }
+            }
+
             return "Valid Move";
         } else {
             return "Invalid Move";
@@ -542,6 +552,20 @@ public class ChessBoard {
             row++;
         }
         return true;
+    }
+
+    public void promote (String moveStatus, String promotedPiece, String newPosition) {
+        int newRow = Character.getNumericValue(newPosition.charAt(1)) - 1;
+        int newCol = newPosition.charAt(0) - 'A';
+        if (promotedPiece.equals("Queen")) {
+            board[newRow][newCol] = moveStatus.startsWith("White")? new Queen(newPosition, true) : new Queen(newPosition, false);
+        } else if (promotedPiece.equals("Rook")) {
+            board[newRow][newCol] = moveStatus.startsWith("White")? new Rook(newPosition, true) : new Rook(newPosition, false);
+        } else if (promotedPiece.equals("Bishop")) {
+            board[newRow][newCol] = moveStatus.startsWith("White")? new Bishop(newPosition, true) : new Bishop(newPosition, false);
+        } else {
+            board[newRow][newCol] = moveStatus.startsWith("White")? new Night(newPosition, true) : new Night(newPosition, false);
+        }
     }
 
     public Piece getPieceAt(String position) {

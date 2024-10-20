@@ -74,6 +74,11 @@ public class ChessUI extends JFrame {
                         JOptionPane.showMessageDialog(this, "Play a Valid move :(", "Invalid Move!", JOptionPane.INFORMATION_MESSAGE);
                     } else if (moveStatus.equals("Check")) {
                         JOptionPane.showMessageDialog(this, "King Safety is Important!", "Check!!!", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (moveStatus.endsWith("Promotion")) {
+                        Promotion promotionWindow = new Promotion((JFrame) SwingUtilities.getWindowAncestor(this));
+                        String promotedPiece = promotionWindow.getPromotedPiece();
+                        board.promote(moveStatus, promotedPiece, position);
+                        isWhiteTurn = !isWhiteTurn;
                     }
                     selectedPosition = null;
                     highlightedSquare = null;
@@ -131,5 +136,72 @@ public class ChessUI extends JFrame {
             }
             g.drawImage(infoImage, tileSize * 8, 0, (getWidth() - (tileSize * 8)), getHeight(), this);
         }
+    }
+}
+
+class Promotion extends JDialog implements ActionListener{
+    JRadioButton queen;
+    JRadioButton rook;
+    JRadioButton bishop;
+    JRadioButton knight;
+    JButton okButton;
+    String promotedPiece;
+
+    Promotion(Frame parent) {
+        super(parent, "Promote Piece", true);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(parent);
+        this.setLayout(new FlowLayout());
+
+        queen = new JRadioButton("Queen");
+        rook = new JRadioButton("Rook");
+        bishop = new JRadioButton("Bishop");
+        knight = new JRadioButton("Knight");
+
+        ButtonGroup promotablePieces = new ButtonGroup();
+        promotablePieces.add(queen);
+        promotablePieces.add(rook);
+        promotablePieces.add(bishop);
+        promotablePieces.add(knight);
+        
+        queen.addActionListener(this);
+        rook.addActionListener(this);
+        bishop.addActionListener(this);
+        knight.addActionListener(this);
+
+        okButton = new JButton("Ok");
+        okButton.addActionListener(this);
+  
+        this.add(queen);
+        this.add(rook);
+        this.add(bishop);
+        this.add(knight);
+        this.add(okButton);
+        this.pack();
+        this.setLocationRelativeTo(parent);
+        this.setVisible(true);
+    }
+ 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == okButton) {
+            if(queen.isSelected()) {
+                promotedPiece = "Queen";
+            } else if(rook.isSelected()) {
+                promotedPiece = "Rook";
+            } else if(bishop.isSelected()) {
+                promotedPiece = "Bishop";
+            } else if (knight.isSelected()) {
+                promotedPiece = "Knight";
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select at least one option.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            this.dispose();
+        }
+    }
+
+    public String getPromotedPiece() {
+        return promotedPiece;
     }
 }
